@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>双色球推荐</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        h3 {
+            color: #2b425b;
+        }
+
+        ul,
+        ul>li {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        #list {
+            height: 280px;
+            padding-top: 18px;
+        }
+
+        #list>li>span {
+            display: inline-block;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 50%;
+            font-weight: 400;
+        }
+
+        #list>li>span.red {
+            border: 2px solid #f54646;
+            color: #f54646;
+        }
+
+        #list>li>span.blue {
+            border: 2px solid #39f;
+            color: #39f;
+        }
+
+        button {
+            border: 1px solid #ee4a47;
+            background-color: #ef5350;
+            border-radius: 3px;
+            padding: 5px 10px;
+            color: #fff;
+        }
+
+        p{
+            color: #2b425b
+        }
+    </style>
+</head>
+
+<body>
+    <h3>今日双色球推荐</h3>
+    <ul id="list"></ul>
+    <button onclick="recommend()">今日推荐</button>
+    <button onclick="random5()">双色球-随机5注</button>
+    <button onclick="norepeatRandom5()">双色球-随机5注不重复</button>
+<pre>
+* ....................................... *
+*               佛祖保佑中大奖             *
+* ....................................... *
+*                 _ooOoo_                 *
+*                o8888888o                *
+*                88" . "88                *
+*                (| -_- |)                *
+*                 O\ = /O                 *
+*             ____/`---'\____             *
+*           .   ' \\| |// `   .           *
+*            / \\||| : |||// \            *
+*          / _||||| -:- |||||- \          *
+*            | | \\\ - /// | |            *
+*          | \_| ''\---/'' | _/|          *
+*           \ .-\__ `-` __/-. /           *
+*        ___`. .' /--.--\ `. . ___        *
+*     ."" '< `.___\_<|>_/___.' >' "".     *
+*    | | : `- \`.;`\ _ /`;.`/ - ` : | |   *
+*      \ \ `-. \_ __\ /__ _/ .-` / /      *
+* ===`-.____`-.___\_____/___.-`____.-'=== *
+*                 `=---='                 *
+* ....................................... *
+*        梦想还是要有的, 万一实现了呢       *
+* ....................................... *
+</pre>
+    <script type="text/javascript">
+        var redArray = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33'],
+            blueArray = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16'],
+            result = [],
+            recommendArray = [],
+            resultHtml = '';
+
+        // 随机5注
+        function random5() {
+            result = [];
+            resultHtml = '';
+            shuffled();
+            for (var i = 0; i < 5; i++) {
+                var red = getRandomArrayElements(redArray, 6);
+                red.forEach(function(item, index, arr) {
+                    arr[index] = '<span class="red"> ' + item + ' </span>';
+                });
+
+                var blue = getRandomArrayElements(blueArray, 1);
+                blue.forEach(function(item, index, arr) {
+                    arr[index] = '<span class="blue"> ' + item + ' </span>';
+                });
+
+                result.push(red.concat(blue));
+            }
+
+            for (var k = 0; k < result.length; k++) {
+                resultHtml += '<li>' + result[k].join('') + '</li>';
+            }
+            document.getElementById('list').innerHTML = resultHtml;
+        }
+
+        // 随机5注不重复
+        function norepeatRandom5() {
+            result = [];
+            resultHtml = '';
+            shuffled();
+            for (var i = 0; i < 5; i++) {
+                var tempArray = [];
+                for (var g = i * 6; g < (i + 1) * 6; g++) {
+                    tempArray.push('<span class="red"> ' + redArray[g] + ' </span>');
+                }
+                tempArray.push('<span class="blue"> ' + blueArray[i] + ' </span>');
+                result.push(tempArray);
+            }
+
+            for (var k = 0; k < result.length; k++) {
+                resultHtml += '<li>' + result[k].join('') + '</li>';
+            }
+            document.getElementById('list').innerHTML = resultHtml;
+        }
+
+        // 数组乱序
+        function shuffled() {
+            redArray.sort(function() {
+                return 0.5 - Math.random();
+            });
+
+            blueArray.sort(function() {
+                return 0.5 - Math.random();
+            });
+        }
+
+        // 从数组中随机获取多个数组元素
+        function getRandomArrayElements(arr, count) {
+            var shuffled = arr.slice(0),
+                i = arr.length,
+                min = i - count,
+                temp, index;
+            while (i-- > min) {
+                index = Math.floor((i + 1) * Math.random());
+                temp = shuffled[index];
+                shuffled[index] = shuffled[i];
+                shuffled[i] = temp;
+            }
+            return shuffled.slice(min);
+        }
+
+        // 今日推荐
+        document.onload = recommend();
+
+        function recommend() {
+            result = [];
+            resultHtml = '';
+
+            if (recommendArray.length === 0) {
+                shuffled();
+
+                var tempArray = [];
+                for (var g = 0; g < 6; g++) {
+                    tempArray.push('<span class="red"> ' + redArray[g] + ' </span>');
+                }
+                tempArray.push('<span class="blue"> ' + blueArray[g] + ' </span>');
+                result.push(tempArray);
+
+                recommendArray = result;
+            }
+
+            for (var k = 0; k < recommendArray.length; k++) {
+                resultHtml += '<li>' + recommendArray[k].join('') + '</li>';
+            }
+            document.getElementById('list').innerHTML = resultHtml;
+        }
+    </script>
+</body>
+
+</html>

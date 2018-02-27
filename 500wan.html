@@ -12,6 +12,7 @@
 
         h3 {
             color: #2b425b;
+            margin-bottom: 0px;
         }
 
         ul,
@@ -52,19 +53,19 @@
             color: #fff;
         }
 
-        p{
+        p {
             color: #2b425b
         }
     </style>
 </head>
 
 <body>
-    <h3>今日双色球推荐</h3>
+    <h3 id="title">今日双色球推荐</h3>
     <ul id="list"></ul>
     <button onclick="recommend()">今日推荐</button>
     <button onclick="random5()">双色球-随机5注</button>
     <button onclick="norepeatRandom5()">双色球-随机5注不重复</button>
-<pre>
+    <pre>
 * ....................................... *
 *               佛祖保佑中大奖             *
 * ....................................... *
@@ -103,7 +104,9 @@
             resultHtml = '';
             shuffled();
             for (var i = 0; i < 5; i++) {
-                var red = getRandomArrayElements(redArray, 6);
+                var red = getRandomArrayElements(redArray, 6).sort(function(a, b) {
+                    return a - b;
+                });
                 red.forEach(function(item, index, arr) {
                     arr[index] = '<span class="red"> ' + item + ' </span>';
                 });
@@ -119,6 +122,7 @@
             for (var k = 0; k < result.length; k++) {
                 resultHtml += '<li>' + result[k].join('') + '</li>';
             }
+            document.getElementById('title').textContent='双色球-随机5注';
             document.getElementById('list').innerHTML = resultHtml;
         }
 
@@ -129,16 +133,24 @@
             shuffled();
             for (var i = 0; i < 5; i++) {
                 var tempArray = [];
+                var tempSortArray = [];
                 for (var g = i * 6; g < (i + 1) * 6; g++) {
-                    tempArray.push('<span class="red"> ' + redArray[g] + ' </span>');
+                    tempArray.push(redArray[g]);
                 }
-                tempArray.push('<span class="blue"> ' + blueArray[i] + ' </span>');
-                result.push(tempArray);
+                tempArray = tempArray.sort(function(a, b) {
+                    return a - b;
+                });
+                for (var m = 0; m < tempArray.length; m++) {
+                    tempSortArray.push('<span class="red"> ' + tempArray[m] + ' </span>');
+                }
+                tempSortArray.push('<span class="blue"> ' + blueArray[i] + ' </span>');
+                result.push(tempSortArray);
             }
 
             for (var k = 0; k < result.length; k++) {
                 resultHtml += '<li>' + result[k].join('') + '</li>';
             }
+            document.getElementById('title').textContent='双色球-随机5注不重复';
             document.getElementById('list').innerHTML = resultHtml;
         }
 
@@ -178,19 +190,24 @@
             if (recommendArray.length === 0) {
                 shuffled();
 
-                var tempArray = [];
-                for (var g = 0; g < 6; g++) {
-                    tempArray.push('<span class="red"> ' + redArray[g] + ' </span>');
-                }
-                tempArray.push('<span class="blue"> ' + blueArray[g] + ' </span>');
-                result.push(tempArray);
+                var tempArray = [redArray[0], redArray[1], redArray[2], redArray[3], redArray[4], redArray[5]].sort(function(a, b) {
+                    return a - b;
+                });
 
+                for (var g = 0; g < 6; g++) {
+                    result.push('<span class="red"> ' + tempArray[g] + ' </span>');
+                }
+
+                result.push('<span class="blue"> ' + blueArray[0] + ' </span>');
                 recommendArray = result;
             }
 
+            resultHtml += '<li>';
             for (var k = 0; k < recommendArray.length; k++) {
-                resultHtml += '<li>' + recommendArray[k].join('') + '</li>';
+                resultHtml += recommendArray[k];
             }
+            resultHtml += '</li>';
+            document.getElementById('title').textContent='今日双色球推荐';
             document.getElementById('list').innerHTML = resultHtml;
         }
     </script>

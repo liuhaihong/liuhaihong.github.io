@@ -102,7 +102,8 @@
         function random5() {
             result = [];
             resultHtml = '';
-            shuffled();
+            redArray = shuffle(redArray);
+            blueArray = shuffle(blueArray);
             for (var i = 0; i < 5; i++) {
                 var red = getRandomArrayElements(redArray, 6).sort(function(a, b) {
                     return a - b;
@@ -122,7 +123,7 @@
             for (var k = 0; k < result.length; k++) {
                 resultHtml += '<li>' + result[k].join('') + '</li>';
             }
-            document.getElementById('title').textContent='双色球-随机5注';
+            document.getElementById('title').textContent = '双色球-随机5注';
             document.getElementById('list').innerHTML = resultHtml;
         }
 
@@ -130,7 +131,8 @@
         function norepeatRandom5() {
             result = [];
             resultHtml = '';
-            shuffled();
+            redArray = shuffle(redArray);
+            blueArray = shuffle(blueArray);
             for (var i = 0; i < 5; i++) {
                 var tempArray = [];
                 var tempSortArray = [];
@@ -150,19 +152,20 @@
             for (var k = 0; k < result.length; k++) {
                 resultHtml += '<li>' + result[k].join('') + '</li>';
             }
-            document.getElementById('title').textContent='双色球-随机5注不重复';
+            document.getElementById('title').textContent = '双色球-随机5注不重复';
             document.getElementById('list').innerHTML = resultHtml;
         }
 
         // 数组乱序
-        function shuffled() {
-            redArray.sort(function() {
-                return 0.5 - Math.random();
-            });
-
-            blueArray.sort(function() {
-                return 0.5 - Math.random();
-            });
+        function shuffle(arr) {
+            var len = arr.length;
+            for (var i = 0; i < len - 1; i++) {
+                var index = parseInt(Math.random() * (len - i));
+                var temp = arr[index];
+                arr[index] = arr[len - i - 1];
+                arr[len - i - 1] = temp;
+            }
+            return arr;
         }
 
         // 从数组中随机获取多个数组元素
@@ -188,9 +191,10 @@
             resultHtml = '';
 
             if (recommendArray.length === 0) {
-                shuffled();
+                redArray = shuffle(redArray);
+                blueArray = shuffle(blueArray);
 
-                var tempArray = [redArray[0], redArray[1], redArray[2], redArray[3], redArray[4], redArray[5]].sort(function(a, b) {
+                var tempArray = getRandomArrayElements(redArray, 6).sort(function(a, b) {
                     return a - b;
                 });
 
@@ -198,7 +202,8 @@
                     result.push('<span class="red"> ' + tempArray[g] + ' </span>');
                 }
 
-                result.push('<span class="blue"> ' + blueArray[0] + ' </span>');
+                var blueIndex = Math.floor(Math.random() * 16);
+                result.push('<span class="blue"> ' + blueArray[blueIndex] + ' </span>');
                 recommendArray = result;
             }
 
@@ -207,7 +212,7 @@
                 resultHtml += recommendArray[k];
             }
             resultHtml += '</li>';
-            document.getElementById('title').textContent='今日双色球推荐';
+            document.getElementById('title').textContent = '今日双色球推荐';
             document.getElementById('list').innerHTML = resultHtml;
         }
     </script>

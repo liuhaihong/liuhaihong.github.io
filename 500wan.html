@@ -209,19 +209,21 @@
             var redArray = shuffle(getLotteryArray(red)),
                 blueArray = shuffle(getLotteryArray(blue));
             for (var i = 0; i < count; i++) {
-                var red = getRandomArrayElements(redArray, redNum).sort(function(a, b) {
+                var redBall = getRandomArrayElements(redArray, redNum).sort(function(a, b) {
                     return a - b;
                 });
-                red.forEach(function(item, index, arr) {
+                redBall.forEach(function(item, index, arr) {
                     arr[index] = '<span class="red"> ' + item + ' </span>';
                 });
 
-                var blue = getRandomArrayElements(blueArray, blueNum);
-                blue.forEach(function(item, index, arr) {
+                var blueBall = getRandomArrayElements(blueArray, blueNum).sort(function(a, b) {
+                    return a - b;
+                });
+                blueBall.forEach(function(item, index, arr) {
                     arr[index] = '<span class="blue"> ' + item + ' </span>';
                 });
 
-                resultArray.push(red.concat(blue));
+                resultArray.push(redBall.concat(blueBall));
             }
 
             for (var k = 0; k < resultArray.length; k++) {
@@ -250,27 +252,27 @@
             var redArray = shuffle(getLotteryArray(red)),
                 blueArray = shuffle(getLotteryArray(blue));
             for (var i = 0; i < count; i++) {
-                var tempRedArray = [],
-                    tempBlueArray = [],
+                var redBall = [],
+                    blueBall = [],
                     resultItem = [];
                 for (var g = i * redNum; g < (i + 1) * redNum; g++) {
-                    tempRedArray.push(redArray[g]);
+                    redBall.push(redArray[g]);
                 }
-                tempRedArray = tempRedArray.sort(function(a, b) {
+                redBall = redBall.sort(function(a, b) {
                     return a - b;
                 });
-                for (var m = 0; m < tempRedArray.length; m++) {
-                    resultItem.push('<span class="red"> ' + tempRedArray[m] + ' </span>');
+                for (var m = 0; m < redBall.length; m++) {
+                    resultItem.push('<span class="red"> ' + redBall[m] + ' </span>');
                 }
 
                 for (var g = i * blueNum; g < (i + 1) * blueNum; g++) {
-                    tempBlueArray.push(redArray[g]);
+                    blueBall.push(blueArray[g]);
                 }
-                tempBlueArray = tempBlueArray.sort(function(a, b) {
+                blueBall = blueBall.sort(function(a, b) {
                     return a - b;
                 });
-                for (var m = 0; m < tempBlueArray.length; m++) {
-                    resultItem.push('<span class="blue"> ' + tempBlueArray[m] + ' </span>');
+                for (var m = 0; m < blueBall.length; m++) {
+                    resultItem.push('<span class="blue"> ' + blueBall[m] + ' </span>');
                 }
                 resultArray.push(resultItem);
             }

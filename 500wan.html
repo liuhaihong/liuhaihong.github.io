@@ -1,101 +1,168 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>彩票推荐</title>
-    <style>
-        body {
-            text-align: center;
-        }
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+		<title>彩票推荐</title>
+		<style>
+			body {
+				text-align: center;
+			}
 
-        h3 {
-            color: #2b425b;
-            margin-bottom: 0px;
-        }
+			h3 {
+				color: #2b425b;
+				margin-bottom: 0px;
+			}
 
-        a {
-            color: #000;
-            text-decoration: none;
-        }
+			a {
+				color: #000;
+				text-decoration: none;
+			}
 
-        ul,
-        ul>li {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
+			ul,
+			ul>li {
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
 
-        p {
-            color: #2b425b
-        }
+			p {
+				color: #2b425b
+			}
+			
+			.show {
+				display: block;
+			}
+			
+			.hide {
+				display: none;
+			}
+			
+			.topbar {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				height: 40px;
+				line-height: 40px;
+			}
+			
+			.topbar div {
+				width: 50%;
+				border: 1px solid #f54646;
+			}
 
-        .title {
-            height: 32px;
-            line-height: 32px;
-        }
+			.title {
+				height: 32px;
+				line-height: 32px;
+			}
 
-        .title a {
-            display: inline-block;
-            padding: 0 10px;
-            line-height: 32px;
-            font-size: 14px;
-            border: 1px solid #f54646;
-        }
+			.title a {
+				display: inline-block;
+				padding: 0 10px;
+				line-height: 32px;
+				font-size: 14px;
+				border: 1px solid #f54646;
+			}
 
-        .title a.active {
-            background-color: #f54646;
-            color: #fff;
-        }
+			.topbar div.active, .title a.active {
+				background-color: #f54646;
+				color: #fff;
+			}
 
-        #list {
-            padding-top: 18px;
-            padding-bottom: 18px;
-        }
+			#list, .condition {
+				padding-top: 18px;
+				padding-bottom: 18px;
+			}
+			
+			#multipleList>li {
+				border-top: 1px solid #F2F4F6;
+			}
 
-        #list>li>span {
-            width: 28px;
-            height: 28px;
-            line-height: 28px;
-            display: inline-block;
-            padding: 3px;
-            margin: 5px;
-            border-radius: 50%;
-            font-weight: 400;
-        }
+			#list>li>span, #multipleList li span {
+				width: 28px;
+				height: 28px;
+				line-height: 28px;
+				display: inline-block;
+				padding: 3px;
+				margin: 5px;
+				border-radius: 50%;
+				font-weight: 400;
+				text-align: center;
+			}
 
-        #list>li>span.red {
-            border: 2px solid #f54646;
-            color: #f54646;
-        }
+			#list>li>span.red, #multipleList li span.red {
+				border: 2px solid #f54646;
+				color: #f54646;
+			}
 
-        #list>li>span.blue {
-            border: 2px solid #39f;
-            color: #39f;
-        }
+			#list>li>span.blue, #multipleList li span.blue {
+				border: 2px solid #39f;
+				color: #39f;
+			}
 
-        button {
-            border: 1px solid #ee4a47;
-            background-color: #ef5350;
-            border-radius: 3px;
-            padding: 5px 10px;
-            color: #fff;
-        }
-    </style>
-</head>
+			button {
+				border: 1px solid #ee4a47;
+				background-color: #ef5350;
+				border-radius: 3px;
+				padding: 5px 10px;
+				color: #fff;
+			}
+			
+			.condition select {
+				height: 30px;
+				line-height: 30px;
+				margin: 0 8px;
+			}
+			
+			.change {
+				display: inline-block;
+				width: 30px;
+				height: 30px;
+				line-height: 30px;
+				margin-left: 5px;
+				border: 1px solid #F54646;
+				border-radius: 15px;
+				color: #f54646;
+			}
+			
+		</style>
+	</head>
 
-<body>
-    <h3 class="title">
-        <a href="javascript:;" onclick="changeLottery('ssq')" class="one active">双色球</a>
-        <a href="javascript:;" onclick="changeLottery('dlt')" class="two">大乐透</a>
-        <input type="hidden" name="lotteryType" id="lotteryType" value="ssq">
-    </h3>
-    <ul id="list"></ul>
-    <button onclick="recommend()">今日推荐</button>
-    <button onclick="random(0, 5)">随机5注</button>
-    <button onclick="norepeatRandom(5)">随机5注不重复</button>
-    <pre>
+	<body>
+		<div class="topbar">
+			<div class="general active" onclick="changePlayType('general')">普通</div>
+			<div class="multiple" onclick="changePlayType('multiple')">复式</div>
+			<input type="hidden" name="playType" id="playType" value="general">
+		</div>
+		<h3 class="title">
+			<a href="javascript:;" onclick="changeLottery('ssq')" class="ssq active">双色球</a>
+			<a href="javascript:;" onclick="changeLottery('dlt')" class="dlt">大乐透</a>
+			<input type="hidden" name="lotteryType" id="lotteryType" value="ssq">
+		</h3>
+		<div class="generalBox">
+			<ul id="list"></ul>
+			<button onclick="recommend()">今日推荐</button>
+			<button onclick="random(0, 5)">随机5注</button>
+			<button onclick="norepeatRandom(5)">随机5注不重复</button>
+		</div>
+		<div class="multipleBox hide">
+			<div class="condition">
+				<span>红</span>
+				<select name="reds" class="reds" id="reds" onchange="multipleRandom()">
+				</select>
+				<span>蓝</span>
+				<select name="blues" class="blues" id="blues" onchange="multipleRandom()">
+				</select>
+				<span>组</span>
+				<select name="numbers" class="numbers" id="numbers" onchange="multipleRandom()">
+				</select>
+				<span class="change" onclick="multipleRandom()">换</span>
+			</div>
+			<ul id="multipleList">
+			</ul>
+		</div>
+		<pre>
 * ....................................... *
 *               佛祖保佑中大奖             *
 * ....................................... *
@@ -121,212 +188,295 @@
 *        梦想还是要有的, 万一实现了呢       *
 * ....................................... *
 </pre>
-    <script type="text/javascript">
-        // 初始化数据
-        var resultArray = [],
-            todayRecommend = {
-                ssq: [],
-                dlt: []
-            },
-            resultHtml = '';
+		<script type="text/javascript">
+			// 初始化数据
+			var resultArray = [],
+				todayRecommend = {
+					ssq: [],
+					dlt: []
+				},
+				resultHtml = '';
 
-        // 今日推荐
-        recommend();
+			// 今日推荐
+			recommend();
 
-        // 彩种切换
-        function changeLottery(type) {
-            switch (type) {
-                case 'ssq':
-                    var one = document.getElementsByClassName('one')[0],
-                        two = document.getElementsByClassName('two')[0];
-                    one.className = 'one active';
-                    two.className = 'two';
-                    document.getElementById('lotteryType').value = 'ssq';
-                    break;
-                case 'dlt':
-                    var one = document.getElementsByClassName('one')[0],
-                        two = document.getElementsByClassName('two')[0];
-                    one.className = 'one';
-                    two.className = 'two active';
-                    document.getElementById('lotteryType').value = 'dlt';
-                    break;
-            }
-            recommend();
-        }
+			// 初始化下拉数据
+			getSelectData('reds', 6, 33, '个');
+			getSelectData('blues', 1, 16, '个');
+			getSelectData('numbers', 1, 5, '组');
 
-        // 随机N注
-        function random(init, count) {
-            var type = document.getElementById('lotteryType').value;
-            switch (type) {
-                case 'ssq':
-                    getRandomData(init, count, 33, 6, 16, 1);
-                    break;
-                case 'dlt':
-                    getRandomData(init, count, 35, 5, 12, 2);
-                    break;
-            }
-        }
+			// 复式切换
+			function changePlayType(type) {
+				var general = document.getElementsByClassName('general')[0],
+					multiple = document.getElementsByClassName('multiple')[0],
+					generalBox = document.getElementsByClassName('generalBox')[0],
+					multipleBox = document.getElementsByClassName('multipleBox')[0];
 
-        // 随机N注不重复
-        function norepeatRandom(count) {
-            var type = document.getElementById('lotteryType').value;
-            switch (type) {
-                case 'ssq':
-                    getNorepeatRandomData(count, 33, 6, 16, 1);
-                    break;
-                case 'dlt':
-                    getNorepeatRandomData(count, 35, 5, 12, 2);
-                    break;
-            }
-        }
+				switch (type) {
+					case 'general':
+						general.className = 'general active';
+						multiple.className = 'multiple';
+						generalBox.className = 'generalBox show';
+						multipleBox.className = 'multipleBox hide';
+						document.getElementById('playType').value = 'general';
+						break;
+					case 'multiple':
+						multiple.className = 'multiple active';
+						general.className = 'general';
+						generalBox.className = 'generalBox hide';
+						multipleBox.className = 'multipleBox show';
+						document.getElementById('playType').value = 'multiple';
+						break;
+				}
 
-        // 今日推荐
-        function recommend() {
-            var type = document.getElementById('lotteryType').value;
-            switch (type) {
-                case 'ssq':
-                    if (todayRecommend.ssq.length === 0) {
-                        random(1, 1);
-                    } else {
-                        resultHtml = '<li>' + todayRecommend.ssq[0].join('') + '</li>';
-                        document.getElementById('list').innerHTML = resultHtml;
-                    }
-                    break;
-                case 'dlt':
-                    if (todayRecommend.dlt.length === 0) {
-                        random(2, 1);
-                    } else {
-                        resultHtml = '<li>' + todayRecommend.dlt[0].join('') + '</li>';
-                        document.getElementById('list').innerHTML = resultHtml;
-                    }
-                    break;
-            }
-        }
+				recommend();
+			}
 
-        // 随机获取N注数据
-        function getRandomData(init, count, red, redNum, blue, blueNum) {
-            // 清空数据
-            resultArray = [];
-            resultHtml = '';
-            // 定义红篮球
-            var redArray = shuffle(getLotteryArray(red)),
-                blueArray = shuffle(getLotteryArray(blue));
-            for (var i = 0; i < count; i++) {
-                var redBall = getRandomArrayElements(redArray, redNum).sort(function(a, b) {
-                    return a - b;
-                });
-                redBall.forEach(function(item, index, arr) {
-                    arr[index] = '<span class="red"> ' + item + ' </span>';
-                });
+			// 彩种切换
+			function changeLottery(type) {
+				var playType = document.getElementById('playType').value;
 
-                var blueBall = getRandomArrayElements(blueArray, blueNum).sort(function(a, b) {
-                    return a - b;
-                });
-                blueBall.forEach(function(item, index, arr) {
-                    arr[index] = '<span class="blue"> ' + item + ' </span>';
-                });
+				var ssq = document.getElementsByClassName('ssq')[0],
+					dlt = document.getElementsByClassName('dlt')[0];
+				switch (type) {
+					case 'ssq':
+						ssq.className = 'ssq active';
+						dlt.className = 'dlt';
+						document.getElementById('lotteryType').value = 'ssq';
+						// 更新下拉数据
+						getSelectData('reds', 6, 33, '个');
+						getSelectData('blues', 1, 16, '个');
+						break;
+					case 'dlt':
+						ssq.className = 'ssq';
+						dlt.className = 'dlt active';
+						document.getElementById('lotteryType').value = 'dlt';
+						// 更新下拉数据
+						getSelectData('reds', 5, 35, '个');
+						getSelectData('blues', 2, 12, '个');
+						break;
+				}
+				recommend();
+			}
 
-                resultArray.push(redBall.concat(blueBall));
-            }
+			// 复式组合
+			function multipleRandom() {
+				var reds = document.getElementById('reds'),
+					redIndex = reds.selectedIndex,
+					redNum = reds.options[redIndex].value,
+					blues = document.getElementById('blues'),
+					blueIndex = blues.selectedIndex,
+					blueNum = blues.options[blueIndex].value,
+					numbers = document.getElementById('numbers'),
+					numberIndex = numbers.selectedIndex,
+					count = numbers.options[numberIndex].value;
+					
+				random(0, count, redNum, blueNum);
+			}
 
-            for (var k = 0; k < resultArray.length; k++) {
-                resultHtml += '<li>' + resultArray[k].join('') + '</li>';
-            }
+			// 随机N注
+			function random(init, count, redNum, blueNum) {
+				var type = document.getElementById('lotteryType').value;
 
-            // 判断是否今日推荐及彩种
-            switch (init) {
-                case 1:
-                    todayRecommend.ssq = resultArray;
-                    break;
-                case 2:
-                    todayRecommend.dlt = resultArray;
-                    break;
-            }
+				switch (type) {
+					case 'ssq':
+						redNum = redNum || 6;
+						blueNum = blueNum || 1;
+						getRandomData(init, count, 33, redNum, 16, blueNum);
+						break;
+					case 'dlt':
+						redNum = redNum || 5;
+						blueNum = blueNum || 2;
+						getRandomData(init, count, 35, redNum, 12, blueNum);
+						break;
+				}
+			}
 
-            document.getElementById('list').innerHTML = resultHtml;
-        }
+			// 随机N注不重复
+			function norepeatRandom(count) {
+				var type = document.getElementById('lotteryType').value;
+				switch (type) {
+					case 'ssq':
+						getNorepeatRandomData(count, 33, 6, 16, 1);
+						break;
+					case 'dlt':
+						getNorepeatRandomData(count, 35, 5, 12, 2);
+						break;
+				}
+			}
 
-        // 随机不重复获取N注数据
-        function getNorepeatRandomData(count, red, redNum, blue, blueNum) {
-            // 清空数据
-            resultArray = [];
-            resultHtml = '';
-            // 定义红篮球
-            var redArray = shuffle(getLotteryArray(red)),
-                blueArray = shuffle(getLotteryArray(blue));
-            for (var i = 0; i < count; i++) {
-                var redBall = [],
-                    blueBall = [],
-                    resultItem = [];
-                for (var g = i * redNum; g < (i + 1) * redNum; g++) {
-                    redBall.push(redArray[g]);
-                }
-                redBall = redBall.sort(function(a, b) {
-                    return a - b;
-                });
-                for (var m = 0; m < redBall.length; m++) {
-                    resultItem.push('<span class="red"> ' + redBall[m] + ' </span>');
-                }
+			// 今日推荐
+			function recommend() {
+				var type = document.getElementById('lotteryType').value,
+					playType = document.getElementById('playType').value;
 
-                for (var g = i * blueNum; g < (i + 1) * blueNum; g++) {
-                    blueBall.push(blueArray[g]);
-                }
-                blueBall = blueBall.sort(function(a, b) {
-                    return a - b;
-                });
-                for (var m = 0; m < blueBall.length; m++) {
-                    resultItem.push('<span class="blue"> ' + blueBall[m] + ' </span>');
-                }
-                resultArray.push(resultItem);
-            }
+				switch (type) {
+					case 'ssq':
+						if (todayRecommend.ssq.length === 0) {
+							random(1, 1);
+						} else {
+							resultHtml = '<li>' + todayRecommend.ssq[0].join('') + '</li>';
+							document.getElementById('list').innerHTML = resultHtml;
+							document.getElementById('multipleList').innerHTML = resultHtml;
+						}
+						break;
+					case 'dlt':
+						if (todayRecommend.dlt.length === 0) {
+							random(2, 1);
+						} else {
+							resultHtml = '<li>' + todayRecommend.dlt[0].join('') + '</li>';
+							document.getElementById('list').innerHTML = resultHtml;
+							document.getElementById('multipleList').innerHTML = resultHtml;
+						}
+						break;
+				}
+			}
 
-            for (var k = 0; k < resultArray.length; k++) {
-                resultHtml += '<li>' + resultArray[k].join('') + '</li>';
-            }
+			// 随机获取N注数据
+			function getRandomData(init, count, red, redNum, blue, blueNum) {
+				// 清空数据
+				resultArray = [];
+				resultHtml = '';
+				// 定义红篮球
+				var redArray = shuffle(getLotteryArray(red)),
+					blueArray = shuffle(getLotteryArray(blue));
+				for (var i = 0; i < count; i++) {
+					var redBall = getRandomArrayElements(redArray, redNum).sort(function(a, b) {
+						return a - b;
+					});
+					redBall.forEach(function(item, index, arr) {
+						arr[index] = '<span class="red"> ' + item + ' </span>';
+					});
 
-            document.getElementById('list').innerHTML = resultHtml;
-        }
+					var blueBall = getRandomArrayElements(blueArray, blueNum).sort(function(a, b) {
+						return a - b;
+					});
+					blueBall.forEach(function(item, index, arr) {
+						arr[index] = '<span class="blue"> ' + item + ' </span>';
+					});
 
-        // 获取数组
-        function getLotteryArray(number) {
-            var lotteryArray = [];
-            for (var i = 1; i <= number; i++) {
-                if (i < 10) {
-                    lotteryArray.push('0' + i);
-                } else {
-                    lotteryArray.push(i.toString());
-                }
-            }
-            return lotteryArray;
-        }
+					resultArray.push(redBall.concat(blueBall));
+				}
 
-        // 数组乱序
-        function shuffle(arr) {
-            var len = arr.length;
-            for (var i = 0; i < len - 1; i++) {
-                var index = parseInt(Math.random() * (len - i));
-                var temp = arr[index];
-                arr[index] = arr[len - i - 1];
-                arr[len - i - 1] = temp;
-            }
-            return arr;
-        }
+				for (var k = 0; k < resultArray.length; k++) {
+					resultHtml += '<li>' + resultArray[k].join('') + '</li>';
+				}
 
-        // 随机获取数组元素
-        function getRandomArrayElements(arr, count) {
-            var shuffled = arr.slice(0),
-                i = arr.length,
-                min = i - count,
-                temp, index;
-            while (i-- > min) {
-                index = Math.floor((i + 1) * Math.random());
-                temp = shuffled[index];
-                shuffled[index] = shuffled[i];
-                shuffled[i] = temp;
-            }
-            return shuffled.slice(min);
-        }
-    </script>
-</body>
+				// 判断是否今日推荐及彩种
+				switch (init) {
+					case 1:
+						todayRecommend.ssq = resultArray;
+						break;
+					case 2:
+						todayRecommend.dlt = resultArray;
+						break;
+				}
+
+				var playType = document.getElementById('playType').value;
+
+				switch (playType) {
+					case 'general':
+						document.getElementById('list').innerHTML = resultHtml;
+						break;
+					case 'multiple':
+						document.getElementById('multipleList').innerHTML = resultHtml;
+						break;
+				}
+			}
+
+			// 随机不重复获取N注数据
+			function getNorepeatRandomData(count, red, redNum, blue, blueNum) {
+				// 清空数据
+				resultArray = [];
+				resultHtml = '';
+				// 定义红篮球
+				var redArray = shuffle(getLotteryArray(red)),
+					blueArray = shuffle(getLotteryArray(blue));
+				for (var i = 0; i < count; i++) {
+					var redBall = [],
+						blueBall = [],
+						resultItem = [];
+					for (var g = i * redNum; g < (i + 1) * redNum; g++) {
+						redBall.push(redArray[g]);
+					}
+					redBall = redBall.sort(function(a, b) {
+						return a - b;
+					});
+					for (var m = 0; m < redBall.length; m++) {
+						resultItem.push('<span class="red"> ' + redBall[m] + ' </span>');
+					}
+
+					for (var g = i * blueNum; g < (i + 1) * blueNum; g++) {
+						blueBall.push(blueArray[g]);
+					}
+					blueBall = blueBall.sort(function(a, b) {
+						return a - b;
+					});
+					for (var m = 0; m < blueBall.length; m++) {
+						resultItem.push('<span class="blue"> ' + blueBall[m] + ' </span>');
+					}
+					resultArray.push(resultItem);
+				}
+
+				for (var k = 0; k < resultArray.length; k++) {
+					resultHtml += '<li>' + resultArray[k].join('') + '</li>';
+				}
+
+				document.getElementById('list').innerHTML = resultHtml;
+			}
+
+			// 获取数组
+			function getLotteryArray(number) {
+				var lotteryArray = [];
+				for (var i = 1; i <= number; i++) {
+					if (i < 10) {
+						lotteryArray.push('0' + i);
+					} else {
+						lotteryArray.push(i.toString());
+					}
+				}
+				return lotteryArray;
+			}
+
+			// 数组乱序
+			function shuffle(arr) {
+				var len = arr.length;
+				for (var i = 0; i < len - 1; i++) {
+					var index = parseInt(Math.random() * (len - i));
+					var temp = arr[index];
+					arr[index] = arr[len - i - 1];
+					arr[len - i - 1] = temp;
+				}
+				return arr;
+			}
+
+			// 随机获取数组元素
+			function getRandomArrayElements(arr, count) {
+				var shuffled = arr.slice(0),
+					i = arr.length,
+					min = i - count,
+					temp, index;
+				while (i-- > min) {
+					index = Math.floor((i + 1) * Math.random());
+					temp = shuffled[index];
+					shuffled[index] = shuffled[i];
+					shuffled[i] = temp;
+				}
+				return shuffled.slice(min);
+			}
+
+			// 生成下拉数据
+			function getSelectData(className, star, end, text) {
+				var list = '';
+
+				for (var i = star; i <= end; i++) {
+					list += '<option value="' + i + '">' + i + '' + text + '</option>';
+				}
+
+				var ele = document.getElementsByClassName(className)[0];
+				ele.innerHTML = list;
+			}
+		</script>
+	</body>
 
 </html>

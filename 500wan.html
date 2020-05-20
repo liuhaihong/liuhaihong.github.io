@@ -520,8 +520,8 @@
 				var type = document.getElementById('lotteryType').value,
 					m = type == 'ssq' ? 6 : 5,
 					n = type == 'ssq' ? 1 : 2,
-					total = combine(redNum, m) * combine(blueNum, n),
-					amount = 2 * total * count,
+					total = combine(redNum, m) * combine(blueNum, n) * count,
+					amount = 2 * total,
 					totalSpan = document.getElementById('total'),
 					amountSpan = document.getElementById('amount');
 

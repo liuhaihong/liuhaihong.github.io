@@ -69,6 +69,15 @@
 				background-color: #f54646;
 				color: #fff;
 			}
+			
+			.cost {
+				padding-top: 20px;
+			}
+			
+			.cost span {
+				color: #f54646;
+				font-weight: bold;
+			}
 
 			#list, .condition {
 				padding-top: 18px;
@@ -162,6 +171,7 @@
 			<ul id="multipleList">
 			</ul>
 		</div>
+		<div class="cost">共<span id="total">0</span>注，合计<span id="amount">0</span>元</div>
 		<pre>
 * ....................................... *
 *               佛祖保佑中大奖             *
@@ -201,9 +211,26 @@
 			recommend();
 
 			// 初始化下拉数据
-			getSelectData('reds', 6, 33, '个');
-			getSelectData('blues', 1, 16, '个');
+			setSelectData();
 			getSelectData('numbers', 1, 5, '组');
+
+			function setSelectData() {
+				var playType = document.getElementById('playType').value,
+					type = document.getElementById('lotteryType').value;
+				if (playType == 'multiple') {
+					switch (type) {
+						case 'ssq':
+							getSelectData('reds', 6, 33, '个');
+							getSelectData('blues', 1, 16, '个');
+							break;
+						case 'dlt':
+							getSelectData('reds', 5, 35, '个');
+							getSelectData('blues', 2, 12, '个');
+							break;
+					}
+				}
+
+			}
 
 			// 复式切换
 			function changePlayType(type) {
@@ -226,6 +253,7 @@
 						generalBox.className = 'generalBox hide';
 						multipleBox.className = 'multipleBox show';
 						document.getElementById('playType').value = 'multiple';
+						setSelectData();
 						break;
 				}
 
@@ -270,7 +298,7 @@
 					numbers = document.getElementById('numbers'),
 					numberIndex = numbers.selectedIndex,
 					count = numbers.options[numberIndex].value;
-					
+
 				random(0, count, redNum, blueNum);
 			}
 
@@ -318,6 +346,7 @@
 							resultHtml = '<li>' + todayRecommend.ssq[0].join('') + '</li>';
 							document.getElementById('list').innerHTML = resultHtml;
 							document.getElementById('multipleList').innerHTML = resultHtml;
+							cost(1, 6, 1);
 						}
 						break;
 					case 'dlt':
@@ -327,6 +356,7 @@
 							resultHtml = '<li>' + todayRecommend.dlt[0].join('') + '</li>';
 							document.getElementById('list').innerHTML = resultHtml;
 							document.getElementById('multipleList').innerHTML = resultHtml;
+							cost(1, 5, 2);
 						}
 						break;
 				}
@@ -344,6 +374,7 @@
 					var redBall = getRandomArrayElements(redArray, redNum).sort(function(a, b) {
 						return a - b;
 					});
+
 					redBall.forEach(function(item, index, arr) {
 						arr[index] = '<span class="red"> ' + item + ' </span>';
 					});
@@ -351,9 +382,11 @@
 					var blueBall = getRandomArrayElements(blueArray, blueNum).sort(function(a, b) {
 						return a - b;
 					});
+
 					blueBall.forEach(function(item, index, arr) {
 						arr[index] = '<span class="blue"> ' + item + ' </span>';
 					});
+
 
 					resultArray.push(redBall.concat(blueBall));
 				}
@@ -382,6 +415,8 @@
 						document.getElementById('multipleList').innerHTML = resultHtml;
 						break;
 				}
+
+				cost(count, redNum, blueNum);
 			}
 
 			// 随机不重复获取N注数据
@@ -423,6 +458,8 @@
 				}
 
 				document.getElementById('list').innerHTML = resultHtml;
+
+				cost(count, redNum, blueNum);
 			}
 
 			// 获取数组
@@ -475,6 +512,38 @@
 
 				var ele = document.getElementsByClassName(className)[0];
 				ele.innerHTML = list;
+			}
+
+			// 计费
+			function cost(count, redNum, blueNum) {
+				console.log(count, redNum, blueNum);
+				var type = document.getElementById('lotteryType').value,
+					m = type == 'ssq' ? 6 : 5,
+					n = type == 'ssq' ? 1 : 2,
+					total = combine(redNum, m) * combine(blueNum, n),
+					amount = 2 * total * count,
+					totalSpan = document.getElementById('total'),
+					amountSpan = document.getElementById('amount');
+
+				totalSpan.innerHTML = total;
+				amountSpan.innerHTML = amount;
+			}
+
+			// 排列组合
+			function combine(m, n) {
+				if (m < n || n < 0) {
+					return 0;
+				}
+				return factorial(m, m - n + 1) / factorial(n, 1);
+			}
+
+			// 阶乘
+			function factorial(max, min) {
+				if (max >= min && max > 1) {
+					return max * factorial(max - 1, min);
+				} else {
+					return 1;
+				}
 			}
 		</script>
 	</body>

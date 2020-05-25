@@ -506,12 +506,20 @@
 				}
 
 				for (var k = 0; k < data.length; k++) {
+					var reds = data[k].reds.sort(function(a, b) {
+						return a - b;
+					});
+					
+					var blues = data[k].blues.sort(function(a, b) {
+						return a - b;
+					});
+					
 					diyResultHtml += '<li>';
-					for (var i = 0; i < data[k].reds.length; i++) {
-						diyResultHtml += '<span class="red"> ' + data[k].reds[i] + ' </span>';
+					for (var i = 0; i < reds.length; i++) {
+						diyResultHtml += '<span class="red"> ' + reds[i] + ' </span>';
 					}
-					for (var i = 0; i < data[k].blues.length; i++) {
-						diyResultHtml += '<span class="blue"> ' + data[k].blues[i] + ' </span>';
+					for (var i = 0; i < blues.length; i++) {
+						diyResultHtml += '<span class="blue"> ' + blues[i] + ' </span>';
 					}
 					diyResultHtml += '</li>';
 

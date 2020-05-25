@@ -680,11 +680,12 @@
 			function getLotteryArray(number) {
 				var lotteryArray = [];
 				for (var i = 1; i <= number; i++) {
-					if (i < 10) {
-						lotteryArray.push('0' + i);
-					} else {
-						lotteryArray.push(i.toString());
-					}
+					//if (i < 10) {
+					//	lotteryArray.push('0' + i);
+					//} else {
+					//	lotteryArray.push(i.toString());
+					//}
+					lotteryArray.push(i.toString());
 				}
 				return lotteryArray;
 			}
